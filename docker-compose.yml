@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  db_postgres:
+    container_name: db_postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  booking-app:
+    container_name: booking-app
+    image: booking-app
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db_postgres
+    network_mode: "host"
+    tty: true
+    stdin_open: true
